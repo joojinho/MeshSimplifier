@@ -2,11 +2,10 @@
 * MeshLab                                                           o o     *
 * A versatile mesh processing toolbox                             o     o   *
 *                                                                _   O  _   *
-* Copyright(C) 2005                                                \/)\/    *
-* Visual Computing Lab                                            /\/|      *
-* ISTI - Italian National Research Council                           |      *
-*                                                                    \      *
-* All rights reserved.                                                      *
+* Copyright(C) 2021                                                \/)\/    *
+* JI-IN Systems.                                                  /\/|      *
+*                                                                    |      *
+* All rights reserved.                                               \      *
 *                                                                           *
 * This program is free software; you can redistribute it and/or modify      *
 * it under the terms of the GNU General Public License as published by      *
@@ -82,25 +81,25 @@ bool export_mesh(QString output_file_path, PluginManager& plugin_manager, MeshDo
     QString extension = output_file_path;
     extension.remove(0, output_file_path.lastIndexOf('.') + 1);
 
-    IOPlugin* io_plugin = plugin_manager.outputMeshPlugin(extension);
-    if (io_plugin == nullptr)
+    IOPlugin* p_io_plugin = plugin_manager.outputMeshPlugin(extension);
+    if (p_io_plugin == nullptr)
     {
         return false;
     }
-    io_plugin->setLog(&mesh_document.Log);
+    p_io_plugin->setLog(&mesh_document.Log);
 
-    MeshModel* mesh_model = mesh_document.mm();
+    MeshModel* p_mesh_model = mesh_document.mm();
     	
     int capability = 0;
     int default_bits = 0;
-    io_plugin->exportMaskCapability(extension, capability, default_bits);
-    const RichParameterList save_parameters = io_plugin->initSaveParameter(extension, *mesh_model);
+    p_io_plugin->exportMaskCapability(extension, capability, default_bits);
+    const RichParameterList save_parameters = p_io_plugin->initSaveParameter(extension, *p_mesh_model);
 
     try
     {
 	    const int mask = 4368;
-	    io_plugin->save(extension, output_file_path, *mesh_model, mask, save_parameters, nullptr);
-        mesh_model->saveTextures(output_directory_path, texture_quality);
+	    p_io_plugin->save(extension, output_file_path, *p_mesh_model, mask, save_parameters, nullptr);
+        p_mesh_model->saveTextures(output_directory_path, texture_quality);
     	
     	return true;
     }
@@ -139,41 +138,41 @@ bool import_mesh(QString input_file_name, PluginManager& plugin_manager, MeshDoc
         }
 
         QString extension = file_info.suffix();
-        IOPlugin* io_plugin = plugin_manager.inputMeshPlugin(extension);
+        IOPlugin* p_io_plugin = plugin_manager.inputMeshPlugin(extension);
 
-        if (io_plugin == nullptr)
+        if (p_io_plugin == nullptr)
         {
             // QString error_msg_format("Unable to open file:\n\"%1\"\n\nError details: file format " + extension + " not supported.");
 
             return false;
         }
 
-        io_plugin->setLog(&mesh_document.Log);
-        RichParameterList pre_parameters = io_plugin->initPreOpenParameter(extension);
+        p_io_plugin->setLog(&mesh_document.Log);
+        RichParameterList pre_parameters = p_io_plugin->initPreOpenParameter(extension);
 
-        const unsigned int mesh_count = io_plugin->numberMeshesContainedInFile(extension, file_name, pre_parameters);
+        const unsigned int mesh_count = p_io_plugin->numberMeshesContainedInFile(extension, file_name, pre_parameters);
         QFileInfo info(file_name);
-        std::list<MeshModel*> mesh_models;
+        std::list<MeshModel*> mesh_model_ptrs;
         for (unsigned int i = 0; i < mesh_count; i++)
         {
-            MeshModel* mesh_model = mesh_document.addNewMesh(file_name, info.fileName());
+            MeshModel* p_mesh_model = mesh_document.addNewMesh(file_name, info.fileName());
             if (mesh_count != 1)
             {
-                mesh_model->setIdInFile(i);
+                p_mesh_model->setIdInFile(i);
             }
-            mesh_models.push_back(mesh_model);
+            mesh_model_ptrs.push_back(p_mesh_model);
         }
 
         try
         {
 	        std::list<int> masks;
-            std::list<std::string> unloaded_textures = meshlab::loadMesh(file_name, io_plugin, pre_parameters, mesh_models, masks, nullptr);
+            std::list<std::string> unloaded_textures = meshlab::loadMesh(file_name, p_io_plugin, pre_parameters, mesh_model_ptrs, masks, nullptr);
         }
         catch (const MLException& e)
         {
-            for (MeshModel* mesh_model : mesh_models)
+            for (MeshModel* p_mesh_model : mesh_model_ptrs)
             {
-            	mesh_document.delMesh(mesh_model);
+            	mesh_document.delMesh(p_mesh_model);
             }
         }
     }
@@ -207,10 +206,10 @@ bool filter_call_back(const int pos, const char* str)
     return true;
 }
 
-bool simplify(MeshDocument& mesh_document, const QAction* action, RichParameterList& parameters)
+bool simplify(MeshDocument& mesh_document, const QAction* p_action, RichParameterList& parameters)
 {
-    FilterPlugin* filter_plugin = qobject_cast<FilterPlugin*>(action->parent());
-    filter_plugin->setLog(&mesh_document.Log);
+    FilterPlugin* p_filter_plugin = qobject_cast<FilterPlugin*>(p_action->parent());
+    p_filter_plugin->setLog(&mesh_document.Log);
 
     try
     {
@@ -218,7 +217,7 @@ bool simplify(MeshDocument& mesh_document, const QAction* action, RichParameterL
         mesh_document.meshDocStateData().create(mesh_document);
     	
         unsigned int post_condition_mask = MeshModel::MM_UNKNOWN;
-        filter_plugin->applyFilter(action, parameters, mesh_document, post_condition_mask, filter_call_back);
+        p_filter_plugin->applyFilter(p_action, parameters, mesh_document, post_condition_mask, filter_call_back);
 
         mesh_document.meshDocStateData().clear();
 
@@ -287,7 +286,7 @@ int main(int argc, char *argv[])
     QLocale::setDefault(QLocale::C);
 
     std::string source_model_file_extension(".3ds");
-    QAction* filter_action = plugin_manager.filterAction("Simplification: Quadric Edge Collapse Decimation");
+    QAction* p_filter_action = plugin_manager.filterAction("Simplification: Quadric Edge Collapse Decimation");
 
 	std::filesystem::create_directories(root_target_model_directory_path);
 	
@@ -321,9 +320,9 @@ int main(int argc, char *argv[])
         auto obj_file_path = output_file_path.replace_extension(".obj");
         QString output_file_path_as_qstring = QString::fromUtf8(obj_file_path.generic_string().c_str());
 
-    	MeshModel* mesh_model = mesh_document.mm();
-        RichParameterList simplification_parameters = build_simplification_parameters(*mesh_model, 0.5, 0.3);
-        if(!simplify(mesh_document, filter_action, simplification_parameters))
+    	MeshModel* p_mesh_model = mesh_document.mm();
+        RichParameterList simplification_parameters = build_simplification_parameters(*p_mesh_model, 0.5, 0.3);
+        if(!simplify(mesh_document, p_filter_action, simplification_parameters))
         {
 			continue;    
         }
