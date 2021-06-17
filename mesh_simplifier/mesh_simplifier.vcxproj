@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{CE6EB04A-BA79-35A0-B174-D11888506A2B}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>mesh_simplifier</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)..\bin\$(Configuration)</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)..\obj\$(Configuration)\$(ProjectName)</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">mesh_simplifier_d</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)..\bin\$(Configuration)</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)..\obj\$(Configuration)\$(ProjectName)</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">mesh_simplifier</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">$(SolutionDir)..\bin\$(Configuration)</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">$(SolutionDir)..\obj\$(Configuration)</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">mesh_simplifier</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">$(SolutionDir)..\bin\$(Configuration)</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">$(SolutionDir)..\obj\$(Configuration)</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">mesh_simplifier</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\libraries\meshlab\include;$(SolutionDir)..\libraries\meshlab\include\vcglib;$(SolutionDir)..\libraries\meshlab\include\vcglib\eigenlib;$(SolutionDir)..\libraries\meshlab\include\external\easyexif;$(SolutionDir)..\libraries\meshlab\include\external\glew-2.1.0\include;$(SolutionDir)..\libraries\qt\include;$(SolutionDir)..\libraries\qt\include\QtCore;$(SolutionDir)..\libraries\qt\include\QtGui;$(SolutionDir)..\libraries\qt\include\QtOpenGL;$(SolutionDir)..\libraries\qt\include\QtWidgets;$(SolutionDir)..\libraries\qt\include\QtANGLE;$(SolutionDir)..\libraries\qt\include\QtXml;$(SolutionDir)..\libraries\qt\include\QtNetwork;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;QT_DISABLE_DEPRECATED_BEFORE=0x000000;NO_XSERVER_DEPENDENCY;NOMINMAX;_CRT_SECURE_NO_DEPRECATE;MESHLAB_VERSION=2021.05;MESHLAB_SCALAR=float;QT_CORE_LIB;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_XML_LIB;QT_NETWORK_LIB;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <PreBuildEvent>
+      <StdOutEncoding>UTF-8</StdOutEncoding>
+      <Message>
+      </Message>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <Link>
+      <AdditionalDependencies>$(SolutionDir)..\libraries\meshlab\lib\$(Configuration)\meshlab-common.lib;$(SolutionDir)..\libraries\meshlab\lib\$(Configuration)\external-exif.lib;$(SolutionDir)..\libraries\meshlab\lib\$(Configuration)\external-glew.lib;$(SolutionDir)..\libraries\qt\lib\Qt5Networkd.lib;$(SolutionDir)..\libraries\qt\lib\Qt5OpenGLd.lib;$(SolutionDir)..\libraries\qt\lib\Qt5Widgetsd.lib;$(SolutionDir)..\libraries\qt\lib\Qt5Guid.lib;$(SolutionDir)..\libraries\qt\lib\Qt5Xmld.lib;$(SolutionDir)..\libraries\qt\lib\Qt5Cored.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>$(SolutionDir)..\bin\$(Configuration)\$(TargetName).lib</ImportLibrary>
+      <ProgramDataBaseFile>$(SolutionDir)..\bin\$(Configuration)\$(TargetName).pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\libraries\meshlab\include;$(SolutionDir)..\libraries\meshlab\include\vcglib;$(SolutionDir)..\libraries\meshlab\include\vcglib\eigenlib;$(SolutionDir)..\libraries\meshlab\include\external\easyexif;$(SolutionDir)..\libraries\meshlab\include\external\glew-2.1.0\include;$(SolutionDir)..\libraries\qt\include;$(SolutionDir)..\libraries\qt\include\QtCore;$(SolutionDir)..\libraries\qt\include\QtGui;$(SolutionDir)..\libraries\qt\include\QtOpenGL;$(SolutionDir)..\libraries\qt\include\QtWidgets;$(SolutionDir)..\libraries\qt\include\QtANGLE;$(SolutionDir)..\libraries\qt\include\QtXml;$(SolutionDir)..\libraries\qt\include\QtNetwork;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;QT_DISABLE_DEPRECATED_BEFORE=0x000000;NO_XSERVER_DEPENDENCY;NOMINMAX;_CRT_SECURE_NO_DEPRECATE;MESHLAB_VERSION=2021.05;MESHLAB_SCALAR=float;QT_CORE_LIB;QT_NO_DEBUG;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_XML_LIB;QT_NETWORK_LIB;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;QT_DISABLE_DEPRECATED_BEFORE=0x000000;NO_XSERVER_DEPENDENCY;NOMINMAX;_CRT_SECURE_NO_DEPRECATE;MESHLAB_VERSION=2021.05;MESHLAB_SCALAR=float;QT_CORE_LIB;QT_NO_DEBUG;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_XML_LIB;QT_NETWORK_LIB;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\temp\meshlab\build\meshlabserver\meshlabserver_autogen\include_Release;D:\temp\meshlab\base\src\meshlabserver;D:\temp\meshlab\base\src\common\..;D:\temp\meshlab\base\src\vcglib;D:\temp\meshlab\base\src\vcglib\eigenlib;D:\temp\meshlab\base\src\external\easyexif;D:\libraries\qt\Qt5.14.2\5.14.2\msvc2017_64\include;D:\libraries\qt\Qt5.14.2\5.14.2\msvc2017_64\include\QtCore;D:\libraries\qt\Qt5.14.2\5.14.2\msvc2017_64\.\mkspecs\win32-msvc;D:\libraries\qt\Qt5.14.2\5.14.2\msvc2017_64\include\QtOpenGL;D:\libraries\qt\Qt5.14.2\5.14.2\msvc2017_64\include\QtWidgets;D:\libraries\qt\Qt5.14.2\5.14.2\msvc2017_64\include\QtGui;D:\libraries\qt\Qt5.14.2\5.14.2\msvc2017_64\include\QtANGLE;D:\libraries\qt\Qt5.14.2\5.14.2\msvc2017_64\include\QtXml;D:\libraries\qt\Qt5.14.2\5.14.2\msvc2017_64\include\QtNetwork;D:\temp\meshlab\base\src\external\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\temp\meshlab\build\meshlabserver\meshlabserver_autogen\include_Release;D:\temp\meshlab\base\src\meshlabserver;D:\temp\meshlab\base\src\common\..;D:\temp\meshlab\base\src\vcglib;D:\temp\meshlab\base\src\vcglib\eigenlib;D:\temp\meshlab\base\src\external\easyexif;D:\libraries\qt\Qt5.14.2\5.14.2\msvc2017_64\include;D:\libraries\qt\Qt5.14.2\5.14.2\msvc2017_64\include\QtCore;D:\libraries\qt\Qt5.14.2\5.14.2\msvc2017_64\.\mkspecs\win32-msvc;D:\libraries\qt\Qt5.14.2\5.14.2\msvc2017_64\include\QtOpenGL;D:\libraries\qt\Qt5.14.2\5.14.2\msvc2017_64\include\QtWidgets;D:\libraries\qt\Qt5.14.2\5.14.2\msvc2017_64\include\QtGui;D:\libraries\qt\Qt5.14.2\5.14.2\msvc2017_64\include\QtANGLE;D:\libraries\qt\Qt5.14.2\5.14.2\msvc2017_64\include\QtXml;D:\libraries\qt\Qt5.14.2\5.14.2\msvc2017_64\include\QtNetwork;D:\temp\meshlab\base\src\external\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PreBuildEvent>
+      <StdOutEncoding>UTF-8</StdOutEncoding>
+      <Message>
+      </Message>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <Link>
+      <AdditionalDependencies>$(SolutionDir)..\libraries\meshlab\lib\$(Configuration)\meshlab-common.lib;$(SolutionDir)..\libraries\meshlab\lib\$(Configuration)\external-exif.lib;$(SolutionDir)..\libraries\meshlab\lib\$(Configuration)\external-glew.lib;$(SolutionDir)..\libraries\qt\lib\Qt5Network.lib;$(SolutionDir)..\libraries\qt\lib\Qt5OpenGL.lib;$(SolutionDir)..\libraries\qt\lib\Qt5Widgets.lib;$(SolutionDir)..\libraries\qt\lib\Qt5Gui.lib;$(SolutionDir)..\libraries\qt\lib\Qt5Xml.lib;$(SolutionDir)..\libraries\qt\lib\Qt5Core.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>$(SolutionDir)..\bin\$(Configuration)\$(TargetName).lib</ImportLibrary>
+      <ProgramDataBaseFile>$(SolutionDir)..\bin\$(Configuration)\$(TargetName).pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
