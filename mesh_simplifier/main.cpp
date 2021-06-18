@@ -20,8 +20,6 @@
 *                                                                           *
 ****************************************************************************/
 
-#include <dimcli/cli.h>
-
 #include <common/globals.h>
 #include <common/mlapplication.h>
 #include <common/mlexception.h>
@@ -29,6 +27,14 @@
 #include <common/parameters/rich_parameter_list.h>
 #include <common/plugins/plugin_manager.h>
 #include <common/utilities/load_save.h>
+
+#include <dimcli/cli.h>
+
+#include <log4cpp/Appender.hh>
+#include <log4cpp/Category.hh>
+#include <log4cpp/FileAppender.hh>
+#include <log4cpp/OstreamAppender.hh>
+#include <log4cpp/PatternLayout.hh>
 
 #include <QDir>
 #include <QFileInfo>
@@ -250,8 +256,7 @@ void load_plugins(std::filesystem::path plugin_directory_path, MeshLabApplicatio
 	try
 	{
 		const QDir plugin_directory_as_qdir(QString::fromUtf8((plugin_directory_path.generic_string().c_str())));
-		auto aa = plugin_directory_as_qdir.absolutePath().toStdString();
-
+		
 		app.addLibraryPath(plugin_directory_as_qdir.absolutePath());
 		plugin_manager.loadPlugins(plugin_directory_as_qdir);
 	}
@@ -272,6 +277,9 @@ int main(int argc, char* argv[])
 	                                                });
 	auto& output_root_directory_path_parameter = cli.opt<std::string>("o").require().
 	                                                 desc("output root directory path.");
+	auto& log_file_path_parameter = cli.opt<std::string>("l").require().
+		desc("log file path.");
+	
 	auto& source_model_file_extension_parameter = cli.opt<std::string>("e").require().desc(
 		"source model file extension.").check([](auto& cli, auto& opt, auto& val)
 	{
@@ -293,6 +301,39 @@ int main(int argc, char* argv[])
 		return cli.printError(std::cerr);
 	}
 
+	log4cpp::Category& category = log4cpp::Category::getInstance("main");
+	category.setPriority(log4cpp::Priority::INFO);
+
+	{
+		std::filesystem::path log_file_path = *log_file_path_parameter;
+		log4cpp::Appender* appender = new log4cpp::FileAppender("RollingFileAppender", log_file_path.generic_string());//The first parameter is the name of appender, and the second is the name of the log file.
+
+		auto layout = new log4cpp::PatternLayout();
+		layout->setConversionPattern("[%p]%d{%d %b %Y %H:%M:%S.%l} %m %n");
+		appender->setLayout(layout);
+		category.addAppender(appender);
+	}
+	{
+		log4cpp::Appender* appender = new log4cpp::OstreamAppender("ConsoleAppender", &std::cout);
+		auto layout = new log4cpp::PatternLayout();
+		layout->setConversionPattern("[%p]%d{%d %b %Y %H:%M:%S.%l} %m %n");
+		appender->setLayout(layout);
+		category.addAppender(appender);
+	}
+
+	{
+		std::vector<std::string> all_args;
+		all_args.assign(argv + 1, argv + argc);
+
+		std::ostringstream imploded;
+		std::copy(all_args.begin(), all_args.end(), std::ostream_iterator<std::string>(imploded, " "));
+
+		std::string message = "program arguments : ";
+		message += imploded.str();
+
+		category.info(message);
+	}
+	
 	std::filesystem::path root_source_model_directory_path = *input_root_directory_path_parameter;
 	std::filesystem::path root_target_model_directory_path = *output_root_directory_path_parameter;
 	std::string source_model_file_extension = *source_model_file_extension_parameter;
@@ -308,14 +349,22 @@ int main(int argc, char* argv[])
 	PluginManager& plugin_manager = meshlab::pluginManagerInstance();
 	std::filesystem::path plugin_directory_path = calculate_plugin_directory_path(argv[0]);
 
-	std::string path_environment_variable = "PATH=" + plugin_directory_path.string() + ";" + getenv("PATH");
-	if (_putenv(path_environment_variable.c_str()) != 0)
 	{
-		exit(0);
+		std::string message = "loading plugins starts : ";
+		message += plugin_directory_path.generic_string();
+
+		category.info(message);
 	}
 
 	load_plugins(plugin_directory_path, app, plugin_manager);
 
+	{
+		std::string message = "loading plugins ends : ";
+		message += plugin_directory_path.generic_string();
+
+		category.info(message);
+	}
+	
 	QAction* p_filter_action = plugin_manager.filterAction("Simplification: Quadric Edge Collapse Decimation");
 
 	if (exists(root_target_model_directory_path))
@@ -323,6 +372,16 @@ int main(int argc, char* argv[])
 		remove_all(root_target_model_directory_path);
 	}
 	create_directories(root_target_model_directory_path);
+
+
+	{
+		std::string message = "simplifying starts";
+
+		category.info(message);
+	}
+	
+	long success_count = 0;
+	long fail_count = 0;
 
 	std::filesystem::recursive_directory_iterator source_model_iterator(root_source_model_directory_path);
 	for (const auto& entry : source_model_iterator)
@@ -340,14 +399,39 @@ int main(int argc, char* argv[])
 		}
 		QString input_file_path_as_qstring = QString::fromUtf8(input_file_path.generic_string().c_str());
 
-		std::filesystem::path relative_file_path = relative(input_file_path, root_source_model_directory_path);
-
 		MeshDocument mesh_document;
 		if (!import_mesh(input_file_path_as_qstring, plugin_manager, mesh_document))
 		{
+			++fail_count;
+			
+			std::string message = "simplification fail";
+			message += "(" + std::to_string(fail_count) + "/" + std::to_string(success_count)+ ")";
+			message += " - import error : ";
+			message += input_file_path.generic_string();
+
+			category.warn(message);
+
 			continue;
 		}
 
+		MeshModel* p_mesh_model = mesh_document.mm();
+		RichParameterList simplification_parameters = build_simplification_parameters(
+			*p_mesh_model, target_face_ratio, mesh_quality);
+		if (!simplify(mesh_document, p_filter_action, simplification_parameters))
+		{
+			++fail_count;
+
+			std::string message = "simplification fail";
+			message += "(" + std::to_string(fail_count) + "/" + std::to_string(success_count) + ")";
+			message += " - simplification error : ";
+			message += input_file_path.generic_string();
+
+			category.warn(message);
+
+			continue;
+		}
+
+		std::filesystem::path relative_file_path = relative(input_file_path, root_source_model_directory_path);
 		std::filesystem::path output_file_path = root_target_model_directory_path / relative_file_path;
 		std::filesystem::path output_directory_path = output_file_path.parent_path();
 		create_directories(output_directory_path);
@@ -355,18 +439,39 @@ int main(int argc, char* argv[])
 		auto obj_file_path = output_file_path.replace_extension(".obj");
 		QString output_file_path_as_qstring = QString::fromUtf8(obj_file_path.generic_string().c_str());
 
-		MeshModel* p_mesh_model = mesh_document.mm();
-		RichParameterList simplification_parameters = build_simplification_parameters(
-			*p_mesh_model, target_face_ratio, mesh_quality);
-		if (!simplify(mesh_document, p_filter_action, simplification_parameters))
-		{
-			continue;
-		}
-
 		if (!export_mesh(output_file_path_as_qstring, plugin_manager, mesh_document, texture_quality))
 		{
+			++fail_count;
+
+			std::string message = "simplification fail";
+			message += "(" + std::to_string(fail_count) + "/" + std::to_string(success_count) + ")";
+			message += " - export error : ";
+			message += input_file_path.generic_string();
+
+			category.warn(message);
 		}
+		else
+		{
+			++success_count;
+
+			std::string message = "simplification success";
+			message += "(" + std::to_string(fail_count) + "/" + std::to_string(success_count) + ") : ";
+			message += input_file_path.generic_string();
+			message += " => ";
+			message += output_file_path.generic_string();
+
+			category.info(message);
+		}
+		
 	}
 
+	{
+		std::string message = "simplifying ends";
+
+		category.info(message);
+	}
+	
+	category.shutdown();
+	
 	return 0;
 }
